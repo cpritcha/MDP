@@ -1,7 +1,5 @@
-module MDP
-
-abstract SMDP
-valueiteration(mdp::SMDP, vstart) = error("Not implemented") 
+abstract MDP
+valueiteration(mdp::SDP, vstart) = error("Not implemented") 
 
 abstract Clock
 type FClock <: Clock
@@ -9,7 +7,7 @@ type FClock <: Clock
 end
 type IClock <: Clock end
 
-type SimpleMDP{T <: Clock} <: SMDP
+type SimpleMDP{T <: Clock} <: MDP
     R::SparseMatrixCSC{Float64,Int64}
     P::SparseMatrixCSC{Float64,Int64}
     indvec::Vector
@@ -17,10 +15,10 @@ type SimpleMDP{T <: Clock} <: SMDP
     time::T # time= Inf -> Infinite Horizon
 end
 
-type GraphMDP <: SMDP
+type GraphMDP <: MDP
 end
 
-type EnsembleMDP{T <: SMDP}
+type EnsembleMDP{T <: MDP}
     mdp::Vector{T}
 end
 

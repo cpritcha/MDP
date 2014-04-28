@@ -1,5 +1,5 @@
 module MDP
-    export headprintln
+    export headprintln, SimpleMDP
 
     include("SimpleMDP.jl")
     include("misc.jl")
