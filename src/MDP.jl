@@ -1,5 +1,5 @@
 module MDP
-    export headprintln, SimpleMDP, valueiteration, policyiteration, simulate
+    export headprintln, SMDP, SimpleMDP, valueiteration, policyiteration, simulate, Clock, IClock, FClock
 
     include("SimpleMDP.jl")
     include("simulator.jl")

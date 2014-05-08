@@ -32,6 +32,7 @@ function valueiteration(mdp::SimpleMDP{IClock};
     ER = sum(mdp.R .* mdp.P,2)
     β = mdp.β
     P = mdp.P
+    indvec = mdp.indvec
 
     while true
         θ = ER + β*P*V1
@@ -67,6 +68,7 @@ function valueiteration(mdp::SimpleMDP{FClock};
     ER = sum(mdp.R .* mdp.P,2)
     P = mdp.P
     β = mdp.β
+    indvec = mdp.indvec
 
     i = n
     while i > 0
@@ -97,9 +99,11 @@ function policyiteration(mdp::SimpleMDP{IClock};
 
     I = eye(n)
     V = zeros(n)
-    P = mdp.P
+
     ER = sum(mdp.R .* mdp.P,2)
+    P = mdp.P
     β = mdp.β
+    indvec = mdp.indvec
 
     while true
         V = (I - β*P[policy_t, :])\ER[policy_t]
