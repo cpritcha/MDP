@@ -6,8 +6,9 @@ Implemented Algorithms
 
 ## Infinite Horizon
 ### Discrete
-- Value Iteration
-- Policy Iteration
+- [x] Value Iteration
+- [x] Policy Iteration
+- [x] Sample Data Generation
 
 ### Continuous
 - Fitted Value Iteration
@@ -15,7 +16,7 @@ Implemented Algorithms
 
 ## Finite Horizon
 ### Discrete
-- Value Iteration
+- [x] Value Iteration
 
 ### Continuous
 - Fitted Value Iteration
