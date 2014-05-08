@@ -11,15 +11,15 @@ Implemented Algorithms
 - [x] Sample Data Generation
 
 ### Continuous
-- Fitted Value Iteration
-- Linear Quadratic Regulator
+- [ ] Fitted Value Iteration
+- [ ] Linear Quadratic Regulator
 
 ## Finite Horizon
 ### Discrete
 - [x] Value Iteration
 
 ### Continuous
-- Fitted Value Iteration
-- Linear Quadratic Regulator
+- [ ] Fitted Value Iteration
+- [ ] Linear Quadratic Regulator
 
 [![Build Status](https://travis-ci.org/cpritcha/MDP.jl.png)](https://travis-ci.org/cpritcha/MDP.jl)
