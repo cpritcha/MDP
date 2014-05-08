@@ -1,5 +1,7 @@
 # MDP
 
+[![Build Status](https://travis-ci.org/cpritcha/MDP.png)](https://travis-ci.org/cpritcha/MDP)
+
 Markov Decision Processes in the Julia Language
 
 Implemented Algorithms
@@ -21,5 +23,3 @@ Implemented Algorithms
 ### Continuous
 - [ ] Fitted Value Iteration
 - [ ] Linear Quadratic Regulator
-
-[![Build Status](https://travis-ci.org/cpritcha/MDP.jl.png)](https://travis-ci.org/cpritcha/MDP.jl)
