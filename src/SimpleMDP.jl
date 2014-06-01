@@ -35,7 +35,7 @@ function valueiteration(mdp::SimpleMDP{IClock};
     indvec = mdp.indvec
 
     while true
-        θ = ER + β*P*V1
+        θ = ER .+ β*P*V1
         copy!(V0, V1)
 
         lb = 1
