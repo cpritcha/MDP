@@ -8,19 +8,25 @@ end
 type IClock <: Clock end
 
 type SimpleMDP{T <: Clock} <: SMDP
-    R::SparseMatrixCSC{Float64,Int64}
+    R::Vector
     P::SparseMatrixCSC{Float64,Int64}
     indvec::Vector
     β::Float64
     time::T
 end
 
-type GraphMDP <: SMDP
+function SimpleMDP{T}(R::SparseMatrixCSC{Float64,Int64},
+                   P::SparseMatrixCSC{Float64,Int64},
+                   indvec::Vector,
+                   β::Float64,
+                   time::T)
+  # convert future state dependent rewards into future
+  #   state independent ones
+  ER = sum(R .* P, 2)
+  SimpleMDP(ER, P, indvec, β, time)
 end
 
-type EnsembleMDP{T <: SMDP}
-    mdp::Vector{T}
-end
+# ***** Discrete State Dynamic Programming *****
 
 function valueiteration(mdp::SimpleMDP{IClock};
   Vstart=zeros(Float64, length(mdp.indvec)), eps=1e-6)
@@ -29,13 +35,13 @@ function valueiteration(mdp::SimpleMDP{IClock};
     V1 = copy(Vstart)
     policy_t = zeros(Int, n)
 
-    ER = sum(mdp.R .* mdp.P,2)
     β = mdp.β
     P = mdp.P
+    R = mdp.R
     indvec = mdp.indvec
 
     while true
-        θ = ER .+ β*P*V1
+        θ = R .+ β*P*V1
         copy!(V0, V1)
 
         lb = 1
@@ -65,14 +71,14 @@ function valueiteration(mdp::SimpleMDP{FClock};
     V[1,:] = V1
     policy_t = zeros(Int, n,m)
 
-    ER = sum(mdp.R .* mdp.P,2)
-    P = mdp.P
     β = mdp.β
+    P = mdp.P
+    R = mdp.R
     indvec = mdp.indvec
 
     i = n
     while i > 0
-        θ = ER + β*P*V1
+        θ = R + β*P*V1
         copy!(V0, V1)
 
         lb = 1
@@ -100,17 +106,17 @@ function policyiteration(mdp::SimpleMDP{IClock};
     I = eye(n)
     V = zeros(n)
 
-    ER = sum(mdp.R .* mdp.P,2)
-    P = mdp.P
     β = mdp.β
+    P = mdp.P
+    R = mdp.R
     indvec = mdp.indvec
 
     while true
-        V = (I - β*P[policy_t, :])\ER[policy_t]
+        V = (I - β*P[policy_t, :])\R[policy_t]
         copy!(policy_t1, policy_t)
 
         # Greedy Policy Improvement
-        θ = ER + β*P*V
+        θ = R + β*P*V
         lb = 1
         ub = indvec[1]
         policy_t[1] = indmax(θ[lb:ub])
@@ -124,4 +130,28 @@ function policyiteration(mdp::SimpleMDP{IClock};
          end
     end
     (V, policy_t)
+end
+
+# ***** Continuous State Dynamic Programming *****
+
+type ApproxFunc
+  fn::Function
+  params
+end
+
+function predict(x,f::ApproxFunc)
+  n = length(x)
+  out = Array(Float64, n)
+  for i=1:n
+    f.fn(x[i],f.params)
+  end
+  out
+end
+
+function residuals(x, f::ApproxFunc)
+  x .- predict(x, f)
+end
+
+function fittedvalueiteration(mdp::SimpleMDP{IClock}, func)
+
 end
